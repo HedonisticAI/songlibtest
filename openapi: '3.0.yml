@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: Библиотека песен
+  description: Тестовое задание начал 22-го, хотя письмо пришло 21(не увидел)
+  version: 1.0.0
+paths:
+  /deleteSong:
+    delete:
+      summary: Удалить песню
+      description: Удаляет песню по указанному ID.
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID песни для удаления
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Песня успешно удалена
+        '404':
+          description: Песня не найдена
+
+  /changeSong:
+    patch:
+      summary: Изменить информацию о песне
+      description: Обновляет информацию о песне по ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeRequest'
+      responses:
+        '200':
+          description: Информация о песне успешно обновлена
+        '404':
+          description: Песня не найдена
+
+  /songText:
+    get:
+      summary: Получить текст песни
+      description: Возвращает текст песни по параметрам.
+      parameters:
+        - name:  name
+          in: query
+          required: false
+          description: поиск по исполнителю
+          schema:
+            type: string
+        - name: link
+          in: query
+          required: false
+          description: поиск по ссылке
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: false
+          description: поиск по группе
+          schema:
+            type: string           
+        - name: text
+          in: query
+          required: false
+          description: поиск по тексту
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: false
+          description: поиск по ссылке
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: false
+          description: поиск по дате
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ с текстом песни
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SongText'
+        '404':
+          description: Песня не найдена
+
+  /songInfo:
+    get:
+      summary: Получить информацию о песне
+      description: Возвращает информацию по параметрам.
+      parameters:
+        - name:  name
+          in: query
+          required: false
+          description: поиск по исполнителю
+          schema:
+            type: string
+        - name: link
+          in: query
+          required: false
+          description: поиск по ссылке
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: false
+          description: поиск по группе
+          schema:
+            type: string           
+        - name: text
+          in: query
+          required: false
+          description: поиск по тексту
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: false
+          description: поиск по ссылке
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: false
+          description: поиск по дате
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ с информацией о песне
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SongText'
+        '404':
+          description: Песня не найдена
+
+  /addSong:
+    post:
+      summary: Добавить новую песню
+      description: Создает новую песню с указанной информацией.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSongRequest'
+      responses:
+        '200':
+          description: Песня успешно создана
+          content:
+              application/json:
+                    schema:
+                        $ref: '#/components/schemas/AddSongResp'
+            
+        '400':
+          description: Неверный запрос
+
+components:
+  schemas:
+    SongData:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        group:
+          type: string
+        date:
+          type: string
+          format: date
+        text:
+          type: string
+        link:
+          type: string
+          format: uri
+      required:
+        - id
+        - name
+
+    SongText:
+      type: object
+      properties:
+        verses:
+          type: array
+          items:
+            type: string
+      required:
+        - verses
+    AddSongResp:
+      type: object
+      properties:
+        string_with_ID:
+          type: string
+      required:
+        - string_with_ID
+    ChangeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        group:
+          type: string
+        date:
+          type: string
+          format: date
+        text:
+          type: string
+        link:
+          type: string
+      
+    AddSongRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        group:
+          type: string
+      required:
+          - group
+          - name
