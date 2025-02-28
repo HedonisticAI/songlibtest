@@ -108,10 +108,10 @@ func (Paginator *Paginator) GetSongsWithPagination(c *gin.Context) {
 
 func (Paginator *Paginator) GetSongTextWithPagination(c *gin.Context) {
 	var Text string
-	Paginator.Logger.Info("Got GetSong request")
+	Paginator.Logger.Info("Got GetSongText request")
 	Page, err := strconv.Atoi(c.Query("page"))
 	Begin := (Page - 1) * Paginator.PageSize
-	End := Page*Paginator.PageSize + 1
+	End := Page*Paginator.PageSize
 	if err != nil || Page < 0 {
 		c.String(http.StatusBadRequest, ErrBadPageNumber.Error())
 		return
