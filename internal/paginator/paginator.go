@@ -123,6 +123,7 @@ func (Paginator *Paginator) GetSongTextWithPagination(c *gin.Context) {
 		return
 	}
 	row.Scan(&Text)
-	Verses := SongText{Verses: strings.Split(Text, Paginator.VerseDelimiter)}
+	str := strings.Split(Text, Paginator.VerseDelimiter)
+	Verses := SongText{Verses: str[Begin:End]}
 	c.JSON(http.StatusOK, Verses)
 }
